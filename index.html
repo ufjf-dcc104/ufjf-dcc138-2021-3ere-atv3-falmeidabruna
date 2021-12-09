@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exemplo 02</title>
+</head>
+<body>
+    <h1> Exemplo 02 </h1>
+    <canvas></canvas>
+    <script>
+        const canvas = document.querySelector("canvas");
+        const ctx = canvas.getContext("2d");
+        const skelly = new Image();
+        skelly.src = "assets/skelly.png";
+
+        skelly.addEventListener("load", terminouDeCarregar);
+
+        function desenhaFundo() {
+            ctx.fillStyle = "green";
+            ctx.fillRect(0,0, canvas.width, canvas.height);
+            
+        };
+
+        
+        let l = 1;
+        let c = 1;
+        let pose = 0;
+        let quadro = 0;
+        const POSES = [
+            {qmax: 7, pv:9},
+             {qmax: 7, pv:9},
+             {qmax: 7, pv:9},
+             {qmax: 7, pv:9},
+             {qmax: 8, pv:9},
+             {qmax: 8, pv:9},
+             {qmax: 8, pv:9},
+             {qmax: 8, pv:9},
+             {qmax: 9, pv:9},
+             {qmax: 9, pv:9},
+             {qmax: 9, pv:9},
+             {qmax: 9, pv:9},
+             {qmax: 6, pv:9},
+             {qmax: 6, pv:9},
+             {qmax: 6, pv:9},
+             {qmax: 6, pv:9},
+             {qmax: 13, pv:27},
+             {qmax: 13, pv:27},
+             {qmax: 13, pv:27},
+             {qmax: 13, pv:27},
+             {qmax: 6, pv:9} 
+        ];
+
+            function terminouDeCarregar () {
+                ctx.drawImage(skelly,
+                //sx, sy, sw, sh
+                c*64, l*64, 64, 64,
+                //dx, dy, dw, dh
+                0, 0, 64,64 );
+                
+            };
+        let t0;
+        let dt;
+        
+        requestAnimationFrame(passo);
+        function passo(t) {
+            t0 = t0 ?? t;
+            dt = (t - t0)/1000;
+            desenhaFundo();
+
+            quadro = (quadro >= POSES [pose].qmax -1) ? 0 : quadro + POSES [pose].pv * dt;
+
+            ctx.drawImage(skelly,
+                //sx, sy, sw, sh
+                Math.floor(quadro)*64, pose*64, 64, 64,
+                //dx, dy, dw, dh
+                0, 0, 64,64 );
+
+            requestAnimationFrame(passo);
+            t0 = t;
+        };
+    </script>
+</body>
+</html>
